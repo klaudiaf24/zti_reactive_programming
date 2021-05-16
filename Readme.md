@@ -16,7 +16,7 @@ Repozytorium z przykładami i prezentacją na seminarium z przedmiotu _Zaawanosw
 	
 ## Reactor Project
 
-W tej części zaprezentowana jest konfiguracja środowiska uruchomieniowego w celu uzyskania możliwości dokonania implementacji przykładów związanych z **Project Reactor** zamieszczonych w folderze ![Project Reactor](project-reactor-example).
+W tej części zaprezentowana jest konfiguracja środowiska uruchomieniowego w celu uzyskania możliwości dokonania implementacji przykładów związanych z **Project Reactor** zamieszczonych w folderze [Project Reactor](project-reactor-example).
 
 Przedstawiona konfiguracja tworzona jest w środowisku **IntelliJ** za pomocą **Maven**.
 
@@ -104,7 +104,7 @@ Przedstawiona konfiguracja tworzona jest w środowisku **IntelliJ** za pomocą *
     }
 
    ```
-5. Następnie przechodzimy do katalogu ![Project Reactor](project-reactor-example) i kopiujemy umieszczony tam kod w klasie **MonoTest.java**.
+5. Następnie przechodzimy do katalogu [Project Reactor](project-reactor-example) i kopiujemy umieszczony tam kod w klasie **MonoTest.java**.
 6. Kolejno kopiujemy kod z klasy **FluxTest.java** i wklejamy w odpowiednie miejsce w naszym programie.
 7. Struktura plików powinna wyglądać w następujący sposób:
    ![myImage](images/files-reactor.jpg)
