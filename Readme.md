@@ -3,20 +3,115 @@
 Repozytorium z przykładami i prezentacją na seminarium z przedmiotu _Zaawanoswane techonologie internetowe_ w semestrze letnim 2020/21 na Akademii Górniczo-Hutniczej w Krakowie, wydział Fizyki i Informatyki Stosowanej.
 
 ## Plan seminarium
-* [Seminarium - prezentacja](#seminarium-prezentacja)
-* [Reactor Project](#reactor-project)
-* [RxJava](#rxjava)
-* [Spring Webflux](#spring-webflux)
+- [Programowanie reaktywne](#programowanie-reaktywne)
+  - [Plan seminarium](#plan-seminarium)
+  - [Seminarium - prezentacja](#seminarium---prezentacja)
+  - [Reactor Project](#reactor-project)
+  - [RxJava](#rxjava)
+  - [Spring Webflux](#spring-webflux)
+    - [Twórcy](#twórcy)
 
 ## Seminarium - prezentacja
 .
 	
 ## Reactor Project
-. 
+
+W tej części zaprezentowana jest konfiguracja środowiska uruchomieniowego w celu uzyskania możliwości dokonania implementacji przykładów związanych z **Project Reactor** zamieszczonych w folderze ![Project Reactor](project-reactor-example).
+
+Przedstawiona konfiguracja tworzona jest w środowisku **IntelliJ** za pomocą **Maven**.
+
+1. Początkowo tworzymy nowy projekt **File** -> **New** -> **Project** i wybieramy **Maven** oraz w tym przypadku **Java 11**, następnie nadajemy nazwę projektu jako **project-reactor**.
+2. Kolejno przechodzimy do pliku **pom.xml** w celu dodania odpowiednich zależności.
+   * Modyfikujemy zawartość ```<properties>```:
+    ```xml
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <reactore-core.version>3.3.5.RELEASE</reactore-core.version>
+        <java.version>11</java.version>
+    </properties> 
+    ```
+    * Oraz dodajemy zależności:
+    ```xml
+    <dependencies>
+        <dependency>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-core</artifactId>
+            <version>${reactore-core.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.20</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.30</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.30</version>
+        </dependency>
+
+        <!-- TEST DEPENDENCIES -->
+        <dependency>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-test</artifactId>
+            <version>${reactore-core.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.8.0-M1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    ```
+3. Tworzymy pakiet **zti.reactor.test** w katalogu **src** -> **test** -> **java** i następnie tworzymy pierwszą klasę Java o nazwie **MonoTest.java**.
+4. Kopiujemy poniższy kod w celu sprawdzenia konfiguracji środowiska
+   ```java
+    package zti.reactor.test;
+
+    import lombok.extern.slf4j.Slf4j;
+    import org.junit.jupiter.api.Test;
+    import org.reactivestreams.Subscription;
+    import reactor.core.publisher.Mono;
+
+    @Slf4j
+    public class MonoTest {
+
+        @Test
+        public void firstFunction(){
+            log.info("Hello world!");
+        }
+        
+        @Test
+        public void monoSubscriber(){ 
+            String name = "Jan Kowalski";
+            Mono<String> mono = Mono.just(name)
+                    .log(); 
+
+            mono.subscribe();
+            log.info("Mono {}", mono);
+            log.info("Wszystko działa.");
+        }
+    }
+
+   ```
+5. Następnie przechodzimy do katalogu ![Project Reactor](project-reactor-example) i kopiujemy umieszczony tam kod w klasie **MonoTest.java**.
+6. Kolejno kopiujemy kod z klasy **FluxTest.java** i wklejamy w odpowiednie miejsce w naszym programie.
+7. Struktura plików powinna wyglądać w następujący sposób:
+   ![myImage](images/files-reactor.jpg)
 
 ## RxJava
 
-Poniżej zaprezenowane jest uruchomienie środowiska programistycznego i jego konfiguracja, w celu zaimplementowania przykładowego projektu z użyciem **RjJava** krok po kroku:
+Poniżej zaprezenowane jest uruchomienie środowiska programistycznego i jego konfiguracja, w celu zaimplementowania przykładowego projektu z użyciem **RxJava** krok po kroku:
 
 1. Przed przystąpieniem to setup'u środowiska wymagane jest przygotowanie sobie potrzebnych bibliotek, które zostaną dołączone do projektu przy pomocy **Maven**: 
     * [RxJava](https://mvnrepository.com/artifact/io.reactivex.rxjava2/rxjava) - w poniższym przykładzie wykorzystanko najnowsza wersję [2.2.21](https://mvnrepository.com/artifact/io.reactivex.rxjava2/rxjava/2.2.21)
