@@ -148,28 +148,28 @@ Poniżej zaprezenowane jest uruchomienie środowiska programistycznego i jego ko
 
 12. Uzupełniamy podstawowe metody _Observera_, które będą nam potrzebne (nie przewidziałam działań dla _onError_ oraz _onSubscribe_), wprowadzamy działanie na wątkach:
     ```java
-			@Override
-			public void onComplete() {
-				System.out.println("Wszytskie elementy zostały przetworzone!!");
-			}
+    @Override
+    public void onComplete() {
+        System.out.println("Wszytskie elementy zostały przetworzone!!");
+    }
 
-			@Override
-			public void onNext(String t) {
-				Thread thread = new Thread(new Runnable() {
+    @Override
+    public void onNext(String t) {
+        Thread thread = new Thread(new Runnable() {
 
-					@Override
-					public void run() {
-						try {
-							readWebsite(t, new Random().nextInt() + ".html");
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
+            @Override
+            public void run() {
+                try {
+                    readWebsite(t, new Random().nextInt() + ".html");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
-					}
-				});
-				thread.start();
+            }
+        });
+        thread.start();
 
-			}
+    }
     ```
 
 13. Kiedy cała logika _Observera_ jest zaimplementowana pozostaje połączyć go z _Observable_ poprzez dodanie:
@@ -272,12 +272,225 @@ Poniżej zaprezenowane jest uruchomienie środowiska programistycznego i jego ko
     ```
     oraz poprawnie pobrane i wygenerowane pliki w strukturze katalogu:
 
-    ![myImage](images/struct.jpg)
+    ![myImage](images/rxJava-struct.jpg)
 
 15. Inne przykłady operatorów znajdują się w katalogu _rxjava-example/src/examples_ zaczerpnięte zostały z ksiażki [Learning RxJava](http://www.blancodesigns.com.br/revistas/digital_art/imagens/Learning%20RxJava.pdf).
 
+
+
+
+
 ## Spring Webflux
-.
+Poniżej zaprezenowane jest uruchomienie środowiska programistycznego i jego konfiguracja, w celu zaimplementowania przykładowego projektu z użyciem **Spring Webflux** krok po kroku:
+1. Projekt zostanie utworzony przy pomocy narzędzia **Spring Tool Suite** dostępnego na serwerach uczelnianych. Uruchamiamy go przez terminal:
+    ```
+    $ SpringToolSuite4 
+    ```
+
+2. Tworzymy nowy projekt w ramach tego narzędzia: **Projekt -> Spring Boot -> Spring Starter Project**, ustawiając pola następująco:
+    ![myImage](images/webflux-start.jpg)
+
+3. Dependencje jakie są potrzebne to:
+    * _Spring Reactive Web_
+    * _Spring Data Reactive MongoDB_
+    * _Embeded MongoDB_
+    ![myImage](images/webflux-dependencies.jpg)
+
+4. Modyfiukujemy plik **pom.xml** usuwając informacje o teście dla bazy **MongoDB**:
+    ```xml
+    <dependency>
+        <groupId>de.flapdoodle.embed</groupId>
+        <artifactId>de.flapdoodle.embed.mongo</artifactId>
+	</dependency>
+    <dependency>
+        <groupId>io.projectreactor</groupId>
+        <artifactId>reactor-test</artifactId>
+    </dependency>
+    ```
+
+5. Testujemy środowisko modyfikując plik **src/test/java/webflux/ZtiWebfluxExampleApplicationTests.java**
+
+    ```java
+    package webflux;
+    import org.junit.jupiter.api.Test;
+    import org.springframework.boot.test.context.SpringBootTest;
+    import reactor.core.publisher.Flux;
+    import reactor.core.publisher.Mono;
+
+    @SpringBootTest
+    class ZtiWebfluxExampleApplicationTests {
+
+        @Test
+        void contextLoads() {
+            Flux.just(  "Styczeń", "Luty", "Marzec", 
+                        "Kwiecień", "Maj", "Czerwiec", 
+                        "Lipiec", "Sierpień", "Wrzesień",
+                        "Październik", "Listopad", "Grudzień")
+                .filter(month -> month.startsWith("M"))
+                .subscribe(System.out::println);
+            
+            
+            Mono.just("Miesiąc")
+                .filter(month -> month.startsWith("M"))
+                .subscribe(System.out::println);
+            
+            Mono.just("Miesiąc")
+                .filter(month -> month.startsWith("P"))
+                .subscribe(System.out::println);
+        }
+    }
+    ```
+6. Przed stworzeniem aplikacji modyfikujemy plik **src/main/resources/application.properties** dodając port na którym będzie pracować nasz serwer asynchroniczny  Netty, ponieważ defaultowo włączy się na 8080, które jest zajęte przez Tomcata.
+    ```
+    server.port=8091
+    ```
+
+7. Tworzymy klasę **Student.java** w pakiecie **webflux**:
+    ```java
+    package webflux;
+    import org.springframework.data.mongodb.core.mapping.Document;
+
+    @Document
+    public class Student {
+
+        private String id;
+        private String name;
+
+        public Student() {
+        }
+
+        public Student(String name) {
+            this.name = name;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+        
+        @Override
+        public String toString() {
+            return "Student{" + "id='" + id + "', name='" + name + "'}";
+        }
+    }
+    ```
+
+8. Tworzymy klasę API dla Studenta **StudentApi.java** w pakiecie **webflux**:
+    ```java
+    package webflux;
+    import org.springframework.web.bind.annotation.GetMapping;
+    import org.springframework.web.bind.annotation.RestController;
+
+    import reactor.core.publisher.Flux;
+
+    @RestController
+    public class StudentApi {
+
+        @GetMapping
+        public Flux<String> get() {
+            return Flux.just(   "Klaudia", "Joanna", "Jan", "Kasia", "Ola", 
+                                "Piotr", "Roman", "Klara", "Ela", "Mikołaj", "Magda");
+        }
+
+    }
+    ```
+
+9. Uruchamiamy projekt i sprawdzamy w przeglądarce **http://localhost:8091/**
+    ![myImage](images/webflux-result1.jpg)
+
+
+10. Tworzymy interface **StudentRepo.java** w pakiecie **webflux** rozszerzający _MongoRepository_:
+    ```java
+    package webflux;
+    import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+
+    public interface StudentRepo extends ReactiveMongoRepository<Student, String>{
+
+    }
+    ```
+
+
+11. Wracamy do **StudentApi.java**, gdzie dodajemy pole z obiektem **StudentRepo**, konstruktor i gettery i settery:
+    ```java
+    private StudentRepo studentRepo;
+
+    public StudentApi(StudentRepo studentRepo) {
+        this.setStudentRepo(studentRepo);
+    }
+
+    public StudentRepo getStudentRepo() {
+        return studentRepo;
+    }
+
+    public void setStudentRepo(StudentRepo studentRepo) {
+        this.studentRepo = studentRepo;
+    }
+    ```
+
+12. 16.	Tworzymy klase **InitService.java** w pakiecie **webflux** do dodania danych do bazy, na starcie aplikacji:
+    ```java
+    package webflux;
+
+    import org.springframework.stereotype.Service;
+
+    @Service
+    public class InitService {
+        private StudentRepo studentRepo;
+
+        public InitService(StudentRepo studentRepo) {
+            this.setStudentRepo(studentRepo);
+        }
+
+        @EventListener(ApplicationReadyEvent.class)
+        public void get() {
+            studentRepo.deleteAll()
+                    .thenMany(Flux.just("Klaudia", "Joanna", "Jan", "Kasia", 
+                                        "Ola", "Piotr", "Roman", "Klara", 
+                                        "Ela","Mikołaj", "Magda"))
+                    .map(name -> new Student(name))
+                    .flatMap(studentRepo::save)
+                    .thenMany(studentRepo.findAll()).subscribe(System.out::println);
+
+        }
+
+        public StudentRepo getStudentRepo() {
+            return studentRepo;
+        }
+
+        public void setStudentRepo(StudentRepo studentRepo) {
+            this.studentRepo = studentRepo;
+        }
+    }
+    ```
+
+13. Po uzupełnieniu bazy na początku zmieniamy jedną z metod **StudentApi.java** na:
+     ```java
+    @GetMapping(produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
+        public Flux<Student> get() {
+            return studentRepo.findAll().delayElements(Duration.ofSeconds(1));
+        }
+    ```
+
+14. Przed sprawdzeniem w przeglądarce dodajemy do **InitService.java** dodatkową osobę spoza strumienia:
+     ```java
+    studentRepo.save(new Student("ANNA")).subscribe();
+    ```
+
+15. Uruchamiamy projekt i sprawdzamy w przeglądarce **http://localhost:8091/**.
+
+16. Całość kodu znajduje się w _webflax-example_.
+
 
 ### Twórcy
 * [Klaudia Fil](https://github.com/klaudiaf24)
