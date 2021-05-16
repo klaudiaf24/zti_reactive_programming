@@ -274,7 +274,7 @@ Poniżej zaprezenowane jest uruchomienie środowiska programistycznego i jego ko
 
     ![myImage](images/struct.jpg)
 
-15. Inne przykłady operatorów znajdują się w katalogu _rxjava-example/src/examples_.
+15. Inne przykłady operatorów znajdują się w katalogu _rxjava-example/src/examples_ zaczerpnięte zostały z ksiażki [Learning RxJava](http://www.blancodesigns.com.br/revistas/digital_art/imagens/Learning%20RxJava.pdf).
 
 ## Spring Webflux
 .
