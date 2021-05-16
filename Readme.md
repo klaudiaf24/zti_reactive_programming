@@ -383,12 +383,14 @@ Poniżej zaprezenowane jest uruchomienie środowiska programistycznego i jego ko
     ```
 
 2. Tworzymy nowy projekt w ramach tego narzędzia: **Projekt -> Spring Boot -> Spring Starter Project**, ustawiając pola następująco:
+    
     ![myImage](images/webflux-start.jpg)
 
 3. Dependencje jakie są potrzebne to:
     * _Spring Reactive Web_
     * _Spring Data Reactive MongoDB_
     * _Embeded MongoDB_
+    
     ![myImage](images/webflux-dependencies.jpg)
 
 4. Modyfiukujemy plik **pom.xml** usuwając informacje o teście dla bazy **MongoDB**:
@@ -533,7 +535,7 @@ Poniżej zaprezenowane jest uruchomienie środowiska programistycznego i jego ko
     }
     ```
 
-12. 16.	Tworzymy klase **InitService.java** w pakiecie **webflux** do dodania danych do bazy, na starcie aplikacji:
+12. Tworzymy klase **InitService.java** w pakiecie **webflux** do dodania danych do bazy, na starcie aplikacji:
     ```java
     package webflux;
 
