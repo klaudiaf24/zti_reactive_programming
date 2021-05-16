@@ -9,7 +9,7 @@ Repozytorium z przykładami i prezentacją na seminarium z przedmiotu _Zaawanosw
   - [Reactor Project](#reactor-project)
   - [RxJava](#rxjava)
   - [Spring Webflux](#spring-webflux)
-    - [Twórcy](#twórcy)
+  - [Twórcy](#twórcy)
 
 ## Seminarium - prezentacja
 .
