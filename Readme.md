@@ -12,11 +12,11 @@ Repozytorium z przykładami i prezentacją na seminarium z przedmiotu _Zaawanosw
   - [Twórcy](#twórcy)
 
 ## Seminarium - prezentacja
-.
+[Prezentacja](Prezentacja.pdf)
 	
 ## Reactor Project
 
-W tej części zaprezentowana jest konfiguracja środowiska uruchomieniowego w celu uzyskania możliwości dokonania implementacji przykładów związanych z **Project Reactor** zamieszczonych w folderze [Project Reactor](project-reactor-example).
+W tej części zaprezentowana jest konfiguracja środowiska programistyczne w celu uzyskania możliwości dokonania implementacji przykładów związanych z **Project Reactor** zamieszczonych w folderze [Project Reactor](project-reactor-example).
 
 Przedstawiona konfiguracja tworzona jest w środowisku **IntelliJ** za pomocą **Maven**.
 
@@ -369,7 +369,7 @@ Poniżej zaprezenowane jest uruchomienie środowiska programistycznego i jego ko
 
     ![myImage](images/rxJava-struct.jpg)
 
-15. Inne przykłady operatorów znajdują się w katalogu _rxjava-example/src/examples_ zaczerpnięte zostały z ksiażki [Learning RxJava](http://www.blancodesigns.com.br/revistas/digital_art/imagens/Learning%20RxJava.pdf).
+15. Inne przykłady operatorów znajdują się w katalogu [RxJava](rxjava-example/src/examples) zaczerpnięte zostały z ksiażki [Learning RxJava](http://www.blancodesigns.com.br/revistas/digital_art/imagens/Learning%20RxJava.pdf).
 
 
 
@@ -586,7 +586,7 @@ Poniżej zaprezenowane jest uruchomienie środowiska programistycznego i jego ko
 
 15. Uruchamiamy projekt i sprawdzamy w przeglądarce **http://localhost:8091/**.
 
-16. Całość kodu znajduje się w _webflax-example_.
+16. Całość kodu znajduje się w [WebFlux](webflux-example).
 
 
 ### Twórcy
